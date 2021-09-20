@@ -7,6 +7,7 @@ const { getProducts, createProduct, modifyProduct,
     deleteProduct } = require('../controllers/productsController');
 const { getMaterial, createMaterial, modifyMaterial, 
     deleteMaterial } = require('../controllers/materialsController');
+const { saveAnalisis } = require('../controllers/analisisdecosto');
 const router = Router();
 
 //Empleados:
@@ -32,7 +33,8 @@ router.post('/material', createMaterial);
 router.put('/material', modifyMaterial);
 router.delete('/material/:id', deleteMaterial);
 
-//Cotizacion
+//Analisis De Costo
+router.post('/analisis', saveAnalisis);
 
 
 module.exports = router
