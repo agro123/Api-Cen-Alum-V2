@@ -12,6 +12,8 @@ const saveAnalisis = async (req, res) => {
             observaciones, total
         ])
         //------------------------------------------
+
+        // OBTENER EL ID DEL ANALISIS RECIEN CREADO PARA VINCULAR LOS DEMÁS ELEMENTOS CON ESTE
         const result = await pool.query(`SELECT last_value FROM analisisdecosto_id_analisisdecosto_seq`);
         const id_next_analisis_de_costo = parseInt(result.rows[0].last_value);
 
