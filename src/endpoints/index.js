@@ -5,9 +5,10 @@ const { getEmpleados, createEmpleado,
 const { getClients, createClient, deleteClient } = require('../controllers/clientsController');
 const { getProducts, createProduct, modifyProduct,
     deleteProduct } = require('../controllers/productsController');
-const { getMaterial, createMaterial, modifyMaterial, 
+const { getMaterial, createMaterial, modifyMaterial,
     deleteMaterial } = require('../controllers/materialsController');
-const { saveAnalisis } = require('../controllers/analisisdecosto');
+const { saveAnalisis, getAnalisis, updateAnalisis, deleteAnalisis } = require('../controllers/analisisdecosto');
+const { getCotizaciones, updateCotizacion, saveCotizacion, deleteCotizacion } = require('../controllers/cotizationController');
 const router = Router();
 
 //Empleados:
@@ -35,6 +36,14 @@ router.delete('/material/:id', deleteMaterial);
 
 //Analisis De Costo
 router.post('/analisis', saveAnalisis);
+router.get('/analisis', getAnalisis);
+router.put('analisis', updateAnalisis);
+router.delete('/analisis', deleteAnalisis);
 
+//Cotizaciones
+router.get('/cotizaciones', getCotizaciones);
+router.post('/cotizaciones', saveCotizacion);
+router.put('/cotizaciones', updateCotizacion);
+router.delete('/cotizaciones', deleteCotizacion);
 
 module.exports = router

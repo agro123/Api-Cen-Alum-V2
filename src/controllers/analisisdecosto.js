@@ -67,7 +67,7 @@ const saveAnalisis = async (req, res) => {
 
 
     } catch (e) {
-        return res.status(500).json(console.log(e))
+        return res.status(500).json({ message: 'Ocurrió un error con el servidor' + e })
     }
 
 }
@@ -98,16 +98,17 @@ const getAnalisis = async (req, res) => {
         return res.status(200).json(datos_analisis);
 
     } catch (e) {
-        return res.status(500).json({ message: 'Ocurrió un error con la base de datos' });
+        return res.status(500).json({ message: 'Ocurrió un error con el servidor' + e });
     }
 
 }
 
-const updateAnalisis = (req, res) => {
+const updateAnalisis = async (req, res) => {
 
     try {
 
-        const { responsables_del_trabajo, otros_gastos, materiales_usados, observaciones, total, id_analisisdecosto } = req.body;
+        const { responsables_del_trabajo, otros_gastos, materiales_usados, observaciones, total } = req.body;
+        const id_analisisdecosto = req.params.id;
 
         if (!total || !responsables_del_trabajo || !materiales_usados) {
             throw new Error('Total, Responsables del trabajo o Materiales son necesarios');
@@ -175,16 +176,16 @@ const updateAnalisis = (req, res) => {
         return res.status(200).json({ message: 'Actualizado con éxito' });
 
     } catch (e) {
-        return res.status(500).json({ message: 'Ocurrió un error con la base de datos', e });
+        return res.status(500).json({ message: 'Ocurrió un error con la base de datos'+ e });
     }
 
 }
 
-const deleteAnalisis = (req, res) => {
+const deleteAnalisis = async (req, res) => {
 
     try {
 
-        const { id_analisisdecosto } = req;
+        const id_analisisdecosto = req.params.id;
 
         await pool.query(`DELETE FROM responsables_del_trabajo WHERE id_analisisdecosto= $1`,
             [id_analisisdecosto]);
@@ -200,7 +201,7 @@ const deleteAnalisis = (req, res) => {
         return res.status(200).json({ message: 'Eliminado con éxito' });
 
     } catch (e) {
-        return res.status(500).json({ message: 'Ocurrió un error con el servidor', e });
+        return res.status(500).json({ message: 'Ocurrió un error con el servidor'+ e});
     }
 
 }
