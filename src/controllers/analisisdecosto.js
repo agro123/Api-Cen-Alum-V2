@@ -2,7 +2,7 @@ const pool = require('./bdconnect');
 
 const saveAnalisis = async (req, res) => {
 
-    try{
+    try {
 
         const { responsables_del_trabajo, otros_gastos, materiales_usados, observaciones, total } = req.body;
 
@@ -17,62 +17,197 @@ const saveAnalisis = async (req, res) => {
         const result = await pool.query(`SELECT last_value FROM analisisdecosto_id_analisisdecosto_seq`);
         const id_next_analisis_de_costo = parseInt(result.rows[0].last_value);
 
-        
+
         //GUARDAR EN LA TABLA RESPONSABLES_DEL_TRABAJO LOS TRABAJADORES, SU SALARIO 
         //Y EL ID DE ESTE ANALISIS
-        
-        for (const i = 0; i < responsables_del_trabajo.length; i++)
-        {
+
+        for (const i = 0; i < responsables_del_trabajo.length; i++) {
             const trabajador = {
-                id_empleado : responsables_del_trabajo[i].id_empleado,
-                salario : responsables_del_trabajo[i].id_empleado,
+                id_empleado: responsables_del_trabajo[i].id_empleado,
+                salario: responsables_del_trabajo[i].id_empleado,
             }
 
             await pool.query(`INSERT INTO responsables_del_trabajo (id_empleado, salario, id_analisisdecosto ) 
                     VALUES (
                     $1, $2, $3)`,
-            [trabajador.id_empleado, trabajador.salario, id_next_analisis_de_costo]);
+                [trabajador.id_empleado, trabajador.salario, id_next_analisis_de_costo]);
         }
         //-------------------------------------------------
- 
+
         //INSERTAR EN LA TABLA "OTROS_GASTOS" EL DETALLE DE LO INVERTIDO, SU VALOR Y EL ID DEL ANALISIS -------
-         for(let i= 0; i< otros_gastos.length; i++){
+        for (let i = 0; i < otros_gastos.length; i++) {
 
             const gasto = {
-                descripcion : otros_gastos[i].descripcion,
-                precio : otros_gastos[i].precio,
+                descripcion: otros_gastos[i].descripcion,
+                precio: otros_gastos[i].precio,
             }
             console.log(gasto);
 
             await pool.query(`INSERT INTO otros_gastos (descripcion, precio, id_analisis_de_costo) VALUES ($1,$2,$3)`,
-            [gasto.descripcion, gasto.precio, id_next_analisis_de_costo])
-        } 
+                [gasto.descripcion, gasto.precio, id_next_analisis_de_costo])
+        }
 
         //INSERTAR EN LA TABLA "MATERIALES_USADOS" EL DETALLE DE LOS MATERIALES QUE COMPONDRÁN EL PRODUCTO
-        for(const i= 0; i<materiales_usados.length; i++){
+        for (const i = 0; i < materiales_usados.length; i++) {
 
             const materiales = {
-                id_material : materiales_usados[i].id_material,
-                precio_total : materiales_usados[i].precio_total,
-                longitud : materiales_usados[i].longitud,
-                cantidad : materiales_usados[i].cantidad,
+                id_material: materiales_usados[i].id_material,
+                precio_total: materiales_usados[i].precio_total,
+                longitud: materiales_usados[i].longitud,
+                cantidad: materiales_usados[i].cantidad,
             }
 
             await pool.query(`INSERT INTO materiales_usados (id_material, precio_total, longitud, cantidad, id_analisisdecosto ) 
             VALUES ($1,$2,$3,$4,$5)`,
-            [materiales.id_material, materiales.precio_total, materiales.longitud, materiales.cantidad,
-                id_next_analisis_de_costo])
-        } 
+                [materiales.id_material, materiales.precio_total, materiales.longitud, materiales.cantidad,
+                    id_next_analisis_de_costo])
+        }
 
-    return res.status(200).json({ message: "Analisis de costo insertado correctamente" })
-        
+        return res.status(200).json({ message: "Analisis de costo insertado correctamente" })
 
-    } catch(e){
+
+    } catch (e) {
         return res.status(500).json(console.log(e))
     }
 
 }
 
+const getAnalisis = async (req, res) => {
+
+    try {
+
+        const otros_g = await pool.query(`SELECT * FROM otros_gastos`);
+        const otros_gastos = otros_g.rows;
+
+        const materiales_u = await pool.query(`SELECT * FROM materiales_usados`);
+        const materiales_usados = materiales_u.rows;
+
+        const responsables_t = await pool.query(`SELECT * FROM responsables_del_trabajo`);
+        const responsables_del_trabajo = responsables_t.rows;
+
+        const analisis_c = await pool.query(`SELECT * FROM analisis_de_costo`);
+        const analisis_de_costo = analisis_c.rows;
+
+        const datos_analisis = {
+            otros_gastos,
+            materiales_usados,
+            responsables_del_trabajo,
+            analisis_de_costo
+        }
+
+        return res.status(200).json(datos_analisis);
+
+    } catch (e) {
+        return res.status(500).json({ message: 'Ocurrió un error con la base de datos' });
+    }
+
+}
+
+const updateAnalisis = (req, res) => {
+
+    try {
+
+        const { responsables_del_trabajo, otros_gastos, materiales_usados, observaciones, total, id_analisisdecosto } = req.body;
+
+        if (!total || !responsables_del_trabajo || !materiales_usados) {
+            throw new Error('Total, Responsables del trabajo o Materiales son necesarios');
+        }
+
+        //GUARDAR EN LA TABLA ANALISIS_DE_COSTO LAS OBSERVACIONES Y EL VALOR TOTAL DE ESTE
+
+        await pool.query(`UPDATE analisis_de_costo SET observaciones= $1, total = $2 WHERE id_analisisdecosto = $3`,
+            [observaciones, total, id_analisisdecosto]);
+
+        //GUARDAR EN LA TABLA RESPONSABLES_DEL_TRABAJO LOS TRABAJADORES, SU SALARIO 
+
+        await pool.query(`DELETE FROM responsables_del_trabajo WHERE id_analisisdecosto= $1`,
+            [id_analisisdecosto]);
+
+        for (const i = 0; i < responsables_del_trabajo.length; i++) {
+            const trabajador = {
+                id_empleado: responsables_del_trabajo[i].id_empleado,
+                salario: responsables_del_trabajo[i].id_empleado,
+            }
+
+            await pool.query(`INSERT INTO responsables_del_trabajo (id_empleado, salario, id_analisisdecosto ) 
+                    VALUES (
+                    $1, $2, $3)`,
+                [trabajador.id_empleado, trabajador.salario, id_analisisdecosto]);
+        }
+        //-------------------------------------------------
+
+        //INSERTAR EN LA TABLA "OTROS_GASTOS" EL DETALLE DE LO INVERTIDO Y SU VALOR -------
+
+        await pool.query(`DELETE FROM otros_gastos WHERE id_analisis_de_costo = $1`,
+            [id_analisisdecosto]);
+
+        for (let i = 0; i < otros_gastos.length; i++) {
+
+            const gasto = {
+                descripcion: otros_gastos[i].descripcion,
+                precio: otros_gastos[i].precio,
+            }
+            console.log(gasto);
+
+            await pool.query(`INSERT INTO otros_gastos (descripcion, precio, id_analisis_de_costo) VALUES ($1,$2,$3)`,
+                [gasto.descripcion, gasto.precio, id_analisisdecosto])
+        }
+
+        //INSERTAR EN LA TABLA "MATERIALES_USADOS" EL DETALLE DE LOS MATERIALES QUE COMPONDRÁN EL PRODUCTO
+
+        await pool.query(`DELETE FROM materiales_usados WHERE id_analisisdecosto = $1`, [id_analisisdecosto]);
+
+        for (const i = 0; i < materiales_usados.length; i++) {
+
+            const materiales = {
+                id_material: materiales_usados[i].id_material,
+                precio_total: materiales_usados[i].precio_total,
+                longitud: materiales_usados[i].longitud,
+                cantidad: materiales_usados[i].cantidad,
+            }
+
+            await pool.query(`INSERT INTO materiales_usados (id_material, precio_total, longitud, cantidad, id_analisisdecosto ) 
+            VALUES ($1,$2,$3,$4,$5)`,
+                [materiales.id_material, materiales.precio_total, materiales.longitud, materiales.cantidad,
+                    id_analisisdecosto])
+        }
+
+        return res.status(200).json({ message: 'Actualizado con éxito' });
+
+    } catch (e) {
+        return res.status(500).json({ message: 'Ocurrió un error con la base de datos', e });
+    }
+
+}
+
+const deleteAnalisis = (req, res) => {
+
+    try {
+
+        const { id_analisisdecosto } = req;
+
+        await pool.query(`DELETE FROM responsables_del_trabajo WHERE id_analisisdecosto= $1`,
+            [id_analisisdecosto]);
+
+        await pool.query(`DELETE FROM otros_gastos WHERE id_analisis_de_costo = $1`,
+            [id_analisisdecosto]);
+
+        await pool.query(`DELETE FROM materiales_usados WHERE id_analisisdecosto = $1`, [id_analisisdecosto]);
+
+        await pool.query(`DELETE analisis_de_costo WHERE id_analisisdecosto = $1`,
+            [id_analisisdecosto]);
+
+        return res.status(200).json({ message: 'Eliminado con éxito' });
+
+    } catch (e) {
+        return res.status(500).json({ message: 'Ocurrió un error con el servidor', e });
+    }
+
+}
+
 module.exports = {
-    saveAnalisis
+    saveAnalisis,
+    getAnalisis,
+    updateAnalisis,
+    deleteAnalisis
 }
