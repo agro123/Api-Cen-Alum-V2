@@ -43,7 +43,7 @@ const saveCotizacion = async (req, res) => {
         // OBTENGO EL VALOR ID DE LA COTIZACION QUE ACABO DE CREAR PARA REFERENCIAR LOS 
         // PRODUCTOS SIGUIENTES
 
-        const result = await pool.query(`SELECT last_value FROM analisisdecosto_id_analisisdecosto_seq`);
+        const result = await pool.query(`SELECT last_value FROM cotizacion_id_cotizacion_seq`);
         const id_cotizacion = parseInt(result.rows[0].last_value);
 
         // SACO TODOS LOS ATRIBUTOS DEL ARREGLO PRODUCTOS Y LOS INSERTO UNO POR UNO

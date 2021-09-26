@@ -9,6 +9,7 @@ const { getMaterial, createMaterial, modifyMaterial,
     deleteMaterial } = require('../controllers/materialsController');
 const { saveAnalisis, getAnalisis, updateAnalisis, deleteAnalisis } = require('../controllers/analisisdecosto');
 const { getCotizaciones, updateCotizacion, saveCotizacion, deleteCotizacion } = require('../controllers/cotizationController');
+const { saveOrden, getOrden, deleteOrden } = require('../controllers/osController');
 const router = Router();
 
 //Empleados:
@@ -45,5 +46,10 @@ router.get('/cotizaciones', getCotizaciones);
 router.post('/cotizaciones', saveCotizacion);
 router.put('/cotizaciones', updateCotizacion);
 router.delete('/cotizaciones', deleteCotizacion);
+
+//Ordenes De Servicio
+router.post('/os', saveOrden);
+router.get('/os', getOrden);
+router.delete('/os', deleteOrden);
 
 module.exports = router
