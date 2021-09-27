@@ -1,9 +1,10 @@
 {
-  "name": "BackEnd",
+  "name": "api-cenalum",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon src/index.js",
     "dev": "nodemon src/index.js"
   },
   "keywords": [],
