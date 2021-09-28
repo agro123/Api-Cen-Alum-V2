@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require ('cors');
+const dotenv = require('dotenv');
 
+dotenv.config();
 const app = express();
 
 // middlewares
@@ -12,6 +14,5 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api',require('./endpoints/index'));
 
 const  port= process.env.PORT || 5000;
-
 app.listen(port);
 console.log('Server on port', port);
