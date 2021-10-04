@@ -10,6 +10,7 @@ const getEmpleados = async (req, res) => {
     console.log("----Ocurrio  un error----", e);
   }
 }
+
 const getEmpleadoById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -49,6 +50,7 @@ const createEmpleado = async (req, res) => {
     res.json({ message: "FAILED" });
   }
 }
+
 const deleteEmpleado = async (req, res) => {
   try {
     const id = req.params.id;
