@@ -46,7 +46,7 @@ router.delete('/analisis/:id', deleteAnalisis);
 //Cotizaciones
 router.get('/cotizaciones', getCotizaciones);
 router.post('/cotizaciones', saveCotizacion);
-router.put('/cotizaciones', updateCotizacion);
+router.put('/cotizaciones/:id', updateCotizacion);
 router.delete('/cotizaciones/:id', deleteCotizacion);
 
 //Ordenes De Servicio
