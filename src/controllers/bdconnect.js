@@ -1,7 +1,5 @@
 const { Pool } =  require ('pg'); // libreria de posgrest
-const dotenv = require('dotenv');
 
-dotenv.config();
 
 const config = {
   connectionString: process.env.DATABASE_URL,
