@@ -10,7 +10,7 @@ const { getMaterial, createMaterial, modifyMaterial,
 const { saveAnalisis, getAnalisis, updateAnalisis, deleteAnalisis } = require('../controllers/analisisdecosto');
 const { getCotizaciones, updateCotizacion, saveCotizacion, deleteCotizacion } = require('../controllers/cotizationController');
 const { saveOrden, getOrdenes, deleteOrden, updateOrden } = require('../controllers/osController');
-const { saveChargeAccount, getChargeAccounts, deleteChargeAccount } = require('../controllers/chargeAccountController');
+const { saveChargeAccount, getChargeAccounts, deleteChargeAccount, updateChargueAccount } = require('../controllers/chargeAccountController');
 const router = Router();
 
 //Empleados:
@@ -58,6 +58,7 @@ router.put('/os', updateOrden);
 router.post('/os', saveChargeAccount);
 router.get('/os', getChargeAccounts);
 router.delete('/os', deleteChargeAccount);
+router.put('/os', updateChargueAccount);
 
 
 module.exports = router

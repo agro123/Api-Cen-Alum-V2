@@ -24,29 +24,50 @@ const saveChargeAccount = (req, res) => {
         await pool.query(`INSERT INTO cuenta_de_cobro (fecha, id_orden_de_servicio, total, observaciones) 
         VALUES ($1,$2,$3,$4)`, [fecha, id_os, total, observaciones]);
 
-        return res.status(200).json({message: 'La cuenta de cobro ha sido guardada éxitosamente'})
-        
+        return res.status(200).json({ message: 'La cuenta de cobro ha sido guardada éxitosamente' })
+
     } catch (e) {
 
-        return res.status(500).json({ message: `Hubo un error con el servidor al guardar la cuenta de cobro: ${e}`})
+        return res.status(500).json({ message: `Hubo un error con el servidor al guardar la cuenta de cobro: ${e}` })
     }
 
 };
 
 const deleteChargeAccount = (req, res) => {
     try {
-        
+
         const { id } = req.params;
-        
+
         await pool.query(`DELETE FROM cuenta_de_cobro WHERE id_cuenta_de_cobro = $1`, [id]);
 
     } catch (e) {
-        return res.status(500).json({ message: `Hubo un error con el servidor al eliminar la cuenta de cobro: ${e}`})
+        return res.status(500).json({ message: `Hubo un error con el servidor al eliminar la cuenta de cobro: ${e}` })
     }
 };
+
+const updateChargueAccount = (req, res) => {
+
+    try {
+
+        const { id_cuenta_de_cobro ,id_os, fecha, total, observaciones } = req.body;
+
+        await pool.query(`UPDATE cuenta_de_cobro SET fecha = $1, id_orden_de_servicio = $2, total = $3, 
+            observaciones = $4 WHERE id_cuenta_de_cobro = $5`, [fecha, id_os, total, observaciones, id_cuenta_de_cobro]);
+
+        return res.status(200).json({ message: 'La cuenta de cobro ha sido actualizada éxitosamente' })
+
+    } catch (e) {
+        return res.status(500).json({
+            message: `Hubo un problema con el servidor al actualizar la cuenta 
+                de cobro ${e}`
+        })
+    }
+
+}
 
 module.exports = {
     getChargeAccounts,
     saveChargeAccount,
-    deleteChargeAccount
+    deleteChargeAccount,
+    updateChargueAccount
 }
