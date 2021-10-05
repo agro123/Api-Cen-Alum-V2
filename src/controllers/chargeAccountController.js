@@ -1,6 +1,6 @@
 const pool = require('./bdconnect');
 
-const getChargeAccounts = (req, res) => {
+const getChargeAccounts = async (req, res) => {
 
     try {
 
@@ -15,7 +15,7 @@ const getChargeAccounts = (req, res) => {
 
 };
 
-const saveChargeAccount = (req, res) => {
+const saveChargeAccount = async (req, res) => {
 
     try {
 
@@ -33,7 +33,7 @@ const saveChargeAccount = (req, res) => {
 
 };
 
-const deleteChargeAccount = (req, res) => {
+const deleteChargeAccount = async (req, res) => {
     try {
 
         const { id } = req.params;
@@ -45,7 +45,7 @@ const deleteChargeAccount = (req, res) => {
     }
 };
 
-const updateChargueAccount = (req, res) => {
+const updateChargueAccount = async (req, res) => {
 
     try {
 

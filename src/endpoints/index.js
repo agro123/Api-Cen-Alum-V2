@@ -23,6 +23,7 @@ router.put('/empleado/:id', updateEmpleado);
 router.get('/client', getClients);
 router.post('/client', createClient);
 router.delete('/client/:id', deleteClient);
+router.put('/client')
 
 //Productos
 router.get('/product', getProducts);
@@ -39,25 +40,25 @@ router.delete('/material/:id', deleteMaterial);
 //Analisis De Costo
 router.post('/analisis', saveAnalisis);
 router.get('/analisis', getAnalisis);
-router.put('analisis', updateAnalisis);
-router.delete('/analisis', deleteAnalisis);
+router.put('/analisis/:id', updateAnalisis);
+router.delete('/analisis/:id', deleteAnalisis);
 
 //Cotizaciones
 router.get('/cotizaciones', getCotizaciones);
 router.post('/cotizaciones', saveCotizacion);
 router.put('/cotizaciones', updateCotizacion);
-router.delete('/cotizaciones', deleteCotizacion);
+router.delete('/cotizaciones/:id', deleteCotizacion);
 
 //Ordenes De Servicio
 router.post('/os', saveOrden);
 router.get('/os', getOrdenes);
-router.delete('/os', deleteOrden);
+router.delete('/os/:id', deleteOrden);
 router.put('/os', updateOrden);
 
 //Cuentas de Cobro
 router.post('/os', saveChargeAccount);
 router.get('/os', getChargeAccounts);
-router.delete('/os', deleteChargeAccount);
+router.delete('/os/:id', deleteChargeAccount);
 router.put('/os', updateChargueAccount);
 
 
