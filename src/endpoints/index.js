@@ -19,6 +19,7 @@ router.get('/empleado/:id', getEmpleadoById)
 router.post('/empleado', createEmpleado);
 router.delete('/empleado/:id', deleteEmpleado);
 router.put('/empleado/:id', updateEmpleado);
+
 //Clientes
 router.get('/client', getClients);
 router.post('/client', createClient);
@@ -56,10 +57,10 @@ router.delete('/os/:id', deleteOrden);
 router.put('/os', updateOrden);
 
 //Cuentas de Cobro
-router.post('/os', saveChargeAccount);
-router.get('/os', getChargeAccounts);
-router.delete('/os/:id', deleteChargeAccount);
-router.put('/os', updateChargueAccount);
+router.post('/chargue', saveChargeAccount);
+router.get('/chargue', getChargeAccounts);
+router.delete('/chargue/:id', deleteChargeAccount);
+router.put('/chargue/:id', updateChargueAccount);
 
 
 module.exports = router
