@@ -15,13 +15,13 @@ const getClients = async (req, res) => {
 const createClient = async (req, res) => {
     try {
 
-        const { name, identify, address, phone, email } = req.body;
+        const { nombre, identificacion, direccion, telefono, email } = req.body;
 
         await pool.query(`INSERT INTO cliente (nombre, identificacion, direccion, telefono, email) VALUES ($1,$2,$3,$4,$5)`, [
-            name,
-            identify,
-            address,
-            phone,
+            nombre,
+            identificacion,
+            direccion,
+            telefono,
             email
         ])
         return res.status(200).json({ message: 'Cliente insertado correctamente' })
@@ -35,7 +35,7 @@ const modifyClient = async (req, res) => {
 
     try {
 
-        const { name, identify, address, phone, email, id } = req.body;
+        const { nombre, identificacion, direccion, telefono, email, id } = req.body;
 
         await pool.query(`UPDATE cliente 
         SET nombre = $1, 
@@ -44,7 +44,7 @@ const modifyClient = async (req, res) => {
         telefono = $4,
         email = $5
         WHERE id_cliente = $6`,
-            [name, identify, address, phone, email, id])
+            [nombre, identificacion, direccion, telefono, email, id])
 
         return res.status(200).json({ message: 'Modificado con éxito' })
 
