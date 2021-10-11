@@ -6,7 +6,7 @@ const getEmpleados = async (req, res) => {
     const empleados = await response.rows;
     res.json(empleados);
   } catch (e) {
-    res.json({ message: "FAILED" });
+    res.json({ message: "FAILED", error: e });
     console.log("----Ocurrio  un error----", e);
   }
 }
@@ -15,7 +15,7 @@ const getEmpleadoById = async (req, res) => {
   try {
     const id = req.params.id;
     const response = await pool.query(
-      `SELECT * FROM empleado WHERE cedula = $1 `,
+      `SELECT * FROM empleado WHERE id = $1 `,
       [id]
     );
     if (response.rowCount >= 1) {
@@ -26,7 +26,7 @@ const getEmpleadoById = async (req, res) => {
     }
 
   } catch (e) {
-    res.json({ message: "FAILED" });
+    res.json({ message: "FAILED", error: e });
     console.log("----Ocurrio  un error----", e);
   }
 }
@@ -47,7 +47,7 @@ const createEmpleado = async (req, res) => {
 
   } catch (e) {
     console.log("----Ocurrio  un error----", e);
-    res.json({ message: "FAILED" });
+    res.json({ message: "FAILED", error: e });
   }
 }
 
@@ -55,7 +55,7 @@ const deleteEmpleado = async (req, res) => {
   try {
     const id = req.params.id;
     const response = await pool.query(
-      `DELETE FROM empleado WHERE cedula = $1 `,
+      `DELETE FROM empleado WHERE id = $1 `,
       [id]
     );
     if (response.rowCount >= 1) {
@@ -64,7 +64,7 @@ const deleteEmpleado = async (req, res) => {
       res.status(404).json({ message: "NOT EXIST" });
     }
   } catch (e) {
-    res.json({ message: "FAILED" });
+    res.json({ message: "FAILED", error: e });
     console.log("----Ocurrio  un error----", e);
   }
 }
@@ -80,15 +80,16 @@ const updateEmpleado = async (req, res) => {
     email = $3,
     direccion = $4,
     telefono = $5
-    WHERE cedula = $6`,
+    WHERE id = $6`,
       [nombre, cedula, email, direccion, telefono, id]
     )
-    if(response.rowCount>=1){
-      res.json({message: 'SUCCESS'})
-    }else {
-      res.status(404).json({message: 'NOT EXIST'})
+    if (response.rowCount >= 1) {
+      res.json({ message: 'SUCCESS' })
+    } else {
+      res.status(404).json({ message: 'NOT EXIST' })
     }
   } catch (e) {
+    res.json({ message: "FAILED", error: e });
     console.log(e)
   }
 }
