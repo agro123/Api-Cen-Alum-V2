@@ -17,12 +17,12 @@ const createMaterial = async (req, res) => {
 
     try {
 
-        const { reference, description, price } = req.body;
+        const { referencia, descripcion, precio } = req.body;
 
         await pool.query(`INSERT INTO material (referencia, descripcion, 
                 precio) VALUES (
                     $1, $2, $3)`,
-            [reference, description, price]);
+            [referencia, descripcion, precio]);
 
         return res.status(200).json({ message: "Material insertado correctamente" })
 
@@ -50,11 +50,11 @@ const modifyMaterial= async (req, res) => {
 
     try {
 
-        const { reference, description, price, id_material } = req.body;
+        const { referencia, descripcion, precio, id_material } = req.body;
 
         await pool.query(`UPDATE material SET referencia = $1, descripcion = $2, 
                 precio = $3 WHERE id_material = $4`,
-            [reference, description, price, id_material]);
+            [referencia, descripcion, precio, id_material]);
 
         return res.status(200).json({ message: "Material modificado correctamente" })
 
