@@ -13,6 +13,11 @@ const { saveOrden, getOrdenes, deleteOrden, updateOrden } = require('../controll
 const { saveChargeAccount, getChargeAccounts, deleteChargeAccount, updateChargueAccount } = require('../controllers/chargeAccountController');
 const router = Router();
 
+
+router.get('/', function (req, res) {
+    res.send('Está es la api de cen-alum :D desarrollada por Leonardo Bolaños, Cristian Medina y Nathalia Riascos');
+});
+
 //Empleados:
 router.get('/empleado', getEmpleados);
 router.get('/empleado/:id', getEmpleadoById)

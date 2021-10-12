@@ -8,7 +8,7 @@ const getClients = async (req, res) => {
         return res.status(200).json(clients)
     }
     catch (e) {
-        return res.status(500).json(console.log(e))
+        return res.json({ message: "FAILED", error: e });
     }
 }
 
@@ -27,7 +27,7 @@ const createClient = async (req, res) => {
         return res.status(200).json({ message: 'Cliente insertado correctamente' })
     }
     catch (e) {
-        res.status(500).json({ message: "Ha ocurrido un error con el servidor" })
+        res.json({ message: "FAILED", error: e });
     }
 }
 
@@ -50,7 +50,7 @@ const modifyClient = async (req, res) => {
 
     }
     catch (e) {
-        return res.status(500).json({ message: "Ha ocurrido un error con el servidor" })
+        return res.json({ message: "FAILED", error: e });
     }
 }
 
@@ -63,7 +63,7 @@ const deleteClient = async (req, res) => {
         return res.status(200).json({ messaje: "Cliente eliminado con éxito" })
 
     } catch (e) {
-        return res.status(200).json({ message: "Ha ocurrido un error con el servidor" })
+        return res.json({ message: "FAILED", error: e });
     }
 }
 
