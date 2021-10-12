@@ -43,7 +43,10 @@ const createEmpleado = async (req, res) => {
       [cedula, email, direccion, telefono, nombre]
     );
 
-    res.json({ message: "SUCCESS" });
+    const id_empleado = await pool.query(`SELECT last_value FROM empleado_id_empleado_seq`)
+    const id = parseInt(id_empleado.rows[0].last_value);
+
+    return res.status(200).json({ id, message: 'Empleado insertado correctamente' });
 
   } catch (e) {
     console.log("----Ocurrio  un error----", e);
