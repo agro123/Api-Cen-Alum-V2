@@ -17,15 +17,14 @@ const createProduct = async (req, res) => {
 
     try {
 
-        const { description, unity_price, id_cotizacion,
-            width, heigth, area, total_price,
-            quantity } = req.body;
+        const { descripcion, precio_unidad, id_cotizacion,
+            ancho, alto, area, precio_total, cantidad } = req.body;
 
         await pool.query(`INSERT INTO producto (descripcion, precio_unidad, 
                 id_cotizacion, ancho, alto, area, preciototal, cantidad) VALUES (
                     $1, $2, $3, $4, $5, $6, $7, $8 )`,
-            [description, unity_price, id_cotizacion,
-                width, heigth, area, total_price, quantity]);
+            [descripcion, precio_unidad, id_cotizacion,
+                ancho, alto, area, precio_total, cantidad]);
 
         return res.status(200).json({ message: "Producto insertado correctamente" })
 
@@ -53,9 +52,8 @@ const modifyProduct = async (req, res) => {
 
     try {
 
-        const { description, unity_price, id_cotizacion,
-            width, heigth, area, total_price,
-            quantity, id_producto } = req.body;
+        const { descripcion, precio_unidad, id_cotizacion,
+            ancho, alto, area, precio_total, cantidad, id_producto } = req.body;
 
         await pool.query(`UPDATE producto SET
                 descripcion = $1, 
@@ -67,8 +65,8 @@ const modifyProduct = async (req, res) => {
                 preciototal = $7, 
                 cantidad = $8 
                 WHERE id_producto = $9 )`,
-            [description, unity_price, id_cotizacion,
-                width, heigth, area, total_price, quantity, id_producto]);
+            [descripcion, precio_unidad, id_cotizacion,
+                ancho, alto, area, precio_total, cantidad, id_producto]);
 
         return res.status(200).json({ message: "Producto modificado correctamente" })
 
