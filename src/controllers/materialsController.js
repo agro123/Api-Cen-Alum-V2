@@ -50,11 +50,13 @@ const modifyMaterial= async (req, res) => {
 
     try {
 
-        const { referencia, descripcion, precio, id_material } = req.body;
+        const { referencia, descripcion, precio } = req.body;
+
+        const {id} = req.params;
 
         await pool.query(`UPDATE material SET referencia = $1, descripcion = $2, 
                 precio = $3 WHERE id_material = $4`,
-            [referencia, descripcion, precio, id_material]);
+            [referencia, descripcion, precio, id]);
 
         return res.status(200).json({ message: "Material modificado correctamente" })
 

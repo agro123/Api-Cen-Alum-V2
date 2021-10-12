@@ -40,7 +40,7 @@ router.delete('/product/:id', deleteProduct);
 //Materiales
 router.get('/material', getMaterial);
 router.post('/material', createMaterial);
-router.put('/material', modifyMaterial);
+router.put('/material/:id', modifyMaterial);
 router.delete('/material/:id', deleteMaterial);
 
 //Analisis De Costo
