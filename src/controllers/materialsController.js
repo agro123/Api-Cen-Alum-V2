@@ -52,7 +52,7 @@ const modifyMaterial= async (req, res) => {
 
         const { referencia, descripcion, precio } = req.body;
 
-        const {id} = req.params;
+        const id = req.params.id;
 
         await pool.query(`UPDATE material SET referencia = $1, descripcion = $2, 
                 precio = $3 WHERE id_material = $4`,
