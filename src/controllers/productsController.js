@@ -26,7 +26,10 @@ const createProduct = async (req, res) => {
             [descripcion, precio_unidad, id_cotizacion,
                 ancho, alto, area, precio_total, cantidad]);
 
-        return res.status(200).json({ message: "Producto insertado correctamente" })
+        const id_producto = await pool.query(`SELECT last_value FROM producto_id_producto_seq`)
+        const id = parseInt(id_producto.rows[0].last_value);
+
+        return res.status(200).json({ id, message: 'Producto insertado correctamente' });
 
     } catch (e) {
         return res.status(500).json({ message: "Ocurrió un error con el servidor" })

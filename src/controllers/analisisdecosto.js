@@ -18,7 +18,7 @@ const saveAnalisis = async (req, res) => {
 
         // OBTENER EL ID DEL ANALISIS RECIEN CREADO PARA VINCULAR LOS DEMÁS ELEMENTOS CON ESTE
         const result = await pool.query(`SELECT last_value FROM analisisdecosto_id_analisisdecosto_seq`);
-        const id_next_analisis_de_costo = parseInt(result.rows[0].last_value);
+        const id = parseInt(result.rows[0].last_value);
 
 
         //GUARDAR EN LA TABLA RESPONSABLES_DEL_TRABAJO LOS TRABAJADORES, SU SALARIO 
@@ -33,7 +33,7 @@ const saveAnalisis = async (req, res) => {
             await pool.query(`INSERT INTO responsables_del_trabajo (id_empleado, salario, id_analisisdecosto ) 
                     VALUES (
                     $1, $2, $3)`,
-                [trabajador.id_empleado, trabajador.salario, id_next_analisis_de_costo]);
+                [trabajador.id_empleado, trabajador.salario, id]);
         }
         //-------------------------------------------------
 
@@ -48,7 +48,7 @@ const saveAnalisis = async (req, res) => {
             console.log(gasto);
 
             await pool.query(`INSERT INTO otros_gastos (descripcion, precio, id_analisis_de_costo) VALUES ($1,$2,$3)`,
-                [gasto.descripcion, gasto.precio, id_next_analisis_de_costo])
+                [gasto.descripcion, gasto.precio, id])
         }
 
         //INSERTAR EN LA TABLA "MATERIALES_USADOS" EL DETALLE DE LOS MATERIALES QUE COMPONDRÁN EL PRODUCTO
@@ -64,10 +64,10 @@ const saveAnalisis = async (req, res) => {
             await pool.query(`INSERT INTO materiales_usados (id_material, precio_total, longitud, cantidad, id_analisisdecosto ) 
             VALUES ($1,$2,$3,$4,$5)`,
                 [materiales.id_material, materiales.precio_total, materiales.longitud, materiales.cantidad,
-                    id_next_analisis_de_costo])
+                    id])
         }
 
-        return res.status(200).json({ message: "Analisis de costo insertado correctamente" })
+        return res.status(200).json({id, message: "Analisis de costo insertado correctamente" })
 
 
     } catch (e) {

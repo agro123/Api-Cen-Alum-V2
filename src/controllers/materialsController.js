@@ -24,7 +24,10 @@ const createMaterial = async (req, res) => {
                     $1, $2, $3)`,
             [referencia, descripcion, precio]);
 
-        return res.status(200).json({ message: "Material insertado correctamente" })
+        const id_material = await pool.query(`SELECT last_value FROM material_id_material_seq`)
+        const id = parseInt(id_material.rows[0].last_value);
+
+        return res.status(200).json({id, message: 'Material insertado correctamente'});
 
     } catch (e) {
         return res.status(500).json({ message: "Ocurrió un error con el servidor" })
