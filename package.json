@@ -12,10 +12,11 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^9.0.2",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.6.0",
-    "postcss": ">=8.2.10",
-    "dotenv": "^9.0.2"
+    "postcss": ">=8.2.10"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

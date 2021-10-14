@@ -11,12 +11,18 @@ const { saveAnalisis, getAnalisis, updateAnalisis, deleteAnalisis } = require('.
 const { getCotizaciones, updateCotizacion, saveCotizacion, deleteCotizacion } = require('../controllers/cotizationController');
 const { saveOrden, getOrdenes, deleteOrden, updateOrden } = require('../controllers/osController');
 const { saveChargeAccount, getChargeAccounts, deleteChargeAccount, updateChargueAccount } = require('../controllers/chargeAccountController');
+const { getUser, createUser, deleteUser } = require ("../controllers/userController.js");
+const { login, authToken } = require ("../controllers/authController.js");
 const router = Router();
 
 
 router.get('/', function (req, res) {
     res.send('Está es la api de cen-alum :D desarrollada por Leonardo Bolaños, Cristian Medina y Nathalia Riascos');
 });
+
+//User
+router.get('/user',authToken, getUser);
+router.post('/login',login );
 
 //Empleados:
 router.get('/empleado', getEmpleados);
@@ -66,6 +72,5 @@ router.post('/chargue', saveChargeAccount);
 router.get('/chargue', getChargeAccounts);
 router.delete('/chargue/:id', deleteChargeAccount);
 router.put('/chargue/:id', updateChargueAccount);
-
 
 module.exports = router
